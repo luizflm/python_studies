@@ -1,3 +1,5 @@
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
 from langchain.agents import create_agent
 from langchain.tools import tool
@@ -5,21 +7,12 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
 import bs4
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-import getpass
-import os
-from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 load_dotenv('./.env')
 
-model = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
+model = ChatOpenAI(model="gpt-4.1")
 
-if not os.environ.get("GOOGLE_API_KEY"):
-    os.environ["GOOGLE_API_KEY"] = getpass.getpass(
-        "Enter API key for Google Gemini: ")
-
-
-embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 vector_store = InMemoryVectorStore(embeddings)
 
